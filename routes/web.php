@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\EmailValidationController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +17,21 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'index'])->name('show-register');
+    Route::post('/register', [RegisterController::class, 'store'])->name('register');
+    Route::get('/login', [LoginController::class, 'index'])->name('show-login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
+});
+
+Route::get('/email/verify/{id}/{hash}', EmailValidationController::class)->middleware(['signed'])->name('verification.verify');
+
+Route::get('/logout', LogoutController::class)->name('logout');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/home', HomeController::class)->name('home');
 });

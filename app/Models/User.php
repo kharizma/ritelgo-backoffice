@@ -2,15 +2,36 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    public const ROLE_MANAGER       = 'manager';
+    public const ROLE_CASHIER       = 'cashier';
+
+    public const STATUS_ACTIVE      = 'active';
+    public const STATUS_NONACTIVE   = 'non-active';
+    public const STATUS_SUSPEND     = 'suspend';
+    public const STATUS_BLOCK       = 'block';
+
+    public const STATUSES = [
+        self::ROLE_MANAGER,
+        self::ROLE_CASHIER,
+        
+        self::STATUS_ACTIVE,
+        self::STATUS_NONACTIVE,
+        self::STATUS_SUSPEND,
+        self::STATUS_BLOCK,
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +39,19 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
+        'role',
         'name',
+        'initial_name',
         'email',
         'password',
+        'mobile_phone',
+        'package_subscription_id',
+        'package_subscription_name',
+        'valid_until',
+        'status',
+        'created_by',
+        'updated_by'
     ];
 
     /**
@@ -41,5 +72,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'mobile_phone_verified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }
