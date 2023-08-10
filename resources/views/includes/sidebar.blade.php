@@ -36,7 +36,8 @@
                   href="#0"
                   class="{{ in_array(\Request::route()->getName(),
                     array(
-                        'settings.accounts.index'
+                        'settings.accounts.index',
+                        'settings.billing.index'
                     )) ? '' : 'collapsed' }} nav-link"
                   data-bs-toggle="collapse"
                   data-bs-target="#ddmenu_2"
@@ -44,6 +45,7 @@
                   aria-expanded="{{ in_array(\Request::route()->getName(),
                     array(
                         'settings.accounts.index',
+                        'settings.billing.index'
                     )) ? 'true' : 'false' }}"
                   aria-label="Toggle navigation"
                 >
@@ -64,13 +66,15 @@
                 <ul id="ddmenu_2" class="collapse dropdown-nav {{ in_array(\Request::route()->getName(),
                     array(
                         'settings.accounts.index',
+                        'settings.billing.index'
                     )) ? 'show' : '' }}">
                     <li>
                         <a href="{{ route('settings.accounts.index') }}" class="nav-link {{ in_array(\Request::route()->getName(),
                             array('settings.accounts.index')) ? 'text-ritelgo-primary' : '' }}"> Akun </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link"> Billing </a>
+                        <a href="{{ route('settings.billing.index') }}" class="nav-link {{ in_array(\Request::route()->getName(),
+                            array('settings.billing.index')) ? 'text-ritelgo-primary' : '' }}"> Billing </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link"> Outlet </a>

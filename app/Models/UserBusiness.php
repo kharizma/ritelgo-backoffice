@@ -33,6 +33,8 @@ class UserBusiness extends Model
         'village_id',
         'village_name',
         'zip_code',
+        'last_payment_date',
+        'last_payment_invoice',
         'created_by',
         'updated_by'
     ];

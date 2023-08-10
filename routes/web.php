@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\BusinessInfoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Settings\AccountController;
+use App\Http\Controllers\Settings\BillingController;
 use App\Http\Controllers\HelperController;
 
 /*
@@ -56,6 +57,9 @@ Route::middleware(['auth','is.complete'])->group(function () {
             Route::get('/', [AccountController::class,'index'])->name('index');
             Route::get('/edit', [AccountController::class,'edit'])->name('edit');
             Route::put('/edit', [AccountController::class,'update'])->name('update');
+        });
+        Route::prefix('billing')->as('billing.')->group(function () {
+            Route::get('/', [BillingController::class,'index'])->name('index');
         });
     });
 });
