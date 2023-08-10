@@ -51,7 +51,9 @@ class RegisterController extends Controller
             'is_agreement'              => $request->is_agreement ? true : false,
             'package_subscription_id'   => 1,
             'package_subscription_name' => $package->name,
-            'valid_until'               => Carbon::now()->addDays(14)->format('Y-m-d')
+            'valid_until'               => Carbon::now()->addDays(14)->format('Y-m-d'),
+            'is_subscribe'              => true,
+            'is_complete_registration'  => false
         ]);
 
         $user = User::create($request->all());

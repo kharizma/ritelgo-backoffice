@@ -23,6 +23,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public const STATUS_SUSPEND     = 'suspend';
     public const STATUS_BLOCK       = 'block';
 
+    public const SUBSCRIBE_EMAIL    = true;
+    public const UNSUBSCRIBE_EMAIL  = false;
+
+    public const COMPLETE_REGISTRATION  = true;
+    public const UNCOMPLETE_REGISTRATION  = true;
+
     public const STATUSES = [
         self::ROLE_MANAGER,
         self::ROLE_CASHIER,
@@ -31,6 +37,12 @@ class User extends Authenticatable implements MustVerifyEmail
         self::STATUS_NONACTIVE,
         self::STATUS_SUSPEND,
         self::STATUS_BLOCK,
+
+        self::SUBSCRIBE_EMAIL,
+        self::UNSUBSCRIBE_EMAIL,
+
+        self::COMPLETE_REGISTRATION,
+        self::UNCOMPLETE_REGISTRATION,
     ];
 
     /**
@@ -49,6 +61,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'package_subscription_id',
         'package_subscription_name',
         'valid_until',
+        'status',
+        'is_subscribe',
+        'is_complete_registration',
         'status',
         'created_by',
         'updated_by'

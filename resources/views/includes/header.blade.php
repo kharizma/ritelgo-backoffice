@@ -17,14 +17,11 @@
                         <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="profile-info">
                                 <div class="info">
-                                    <div class="circle">
-                                        <div class="circle-inner">
-                                        {{ Auth::user()->initial_name }}
-                                        </div>
-                                    </div>
+                                    <div class="image">
+                                        <img src="{{ asset('assets/images/avatar-2.png') }}" alt="" />
+                                      </div>
                                     <div>
                                         <h6 class="fw-500">{{ Auth::user()->name }}</h6>
-                                        <p>{{ Auth::user()->email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -34,22 +31,22 @@
                                 <div class="author-info flex items-center !p-1">
                                     <div class="content">
                                         <h4 class="text-sm">{{ Auth::user()->name }}</h4>
-                                        <a class="text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white text-xs" href="#">{{ ucwords(Auth::user()->role) }}</a>
+                                        <a class="text-xs nav-link" href="#">{{ ucwords(Auth::user()->role) }}</a>
                                     </div>
                                 </div>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="#0">
+                                <a href="{{ route('settings.accounts.index') }}" class="nav-link">
                                     <i class="lni lni-user"></i> Profil Saya
                                 </a>
                             </li>
-                            <li>
-                                <a href="#0"> <i class="lni lni-cog"></i> Pengaturan </a>
-                            </li>
+                            {{-- <li>
+                                <a href="#0" class="nav-link"> <i class="lni lni-cog"></i> Pengaturan </a>
+                            </li> --}}
                             <li class="divider"></li>
                             <li>
-                                <a href="{{ route('logout') }}" class="text-danger"> <i class="lni lni-exit text-danger"></i> Keluar </a>
+                                <a href="{{ route('logout') }}" class="text-danger nav-link"> <i class="lni lni-exit text-danger"></i> Keluar </a>
                             </li>
                         </ul>
                     </div>

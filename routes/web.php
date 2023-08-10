@@ -5,7 +5,10 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\EmailValidationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\BusinessInfoController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Settings\AccountController;
+use App\Http\Controllers\HelperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +35,27 @@ Route::get('/email/verify/{id}/{hash}', EmailValidationController::class)->middl
 
 Route::get('/logout', LogoutController::class)->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::prefix('helper')->as('helper.')->group(function() {
+    Route::get('/regencies/{province_id?}',[HelperController::class,'getRegencies'])->name('regencies');
+    Route::get('/districts/{regency_id?}',[HelperController::class,'getDistricts'])->name('districts');
+    Route::get('/villages/{district_id?}',[HelperController::class,'getVillages'])->name('villages');
+    Route::get('/zip-code/{village_id?}',[HelperController::class,'getZipCode'])->name('zip_code');
+});
+
+Route::middleware(['auth','is.complete'])->prefix('business-info')->as('business-info.')->group(function () {
+    Route::get('/', [BusinessInfoController::class,'index'])->name('index');
+    Route::post('/', [BusinessInfoController::class,'store'])->name('store');
+    Route::put('/edit', [BusinessInfoController::class,'update'])->name('update');
+});
+
+Route::middleware(['auth','is.complete'])->group(function () {
     Route::get('/home', HomeController::class)->name('home');
+
+    Route::prefix('settings')->as('settings.')->group(function () {
+        Route::prefix('accounts')->as('accounts.')->group(function () {
+            Route::get('/', [AccountController::class,'index'])->name('index');
+            Route::get('/edit', [AccountController::class,'edit'])->name('edit');
+            Route::put('/edit', [AccountController::class,'update'])->name('update');
+        });
+    });
 });
