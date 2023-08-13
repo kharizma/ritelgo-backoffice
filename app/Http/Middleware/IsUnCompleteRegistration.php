@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-class IsCompleteRegistration
+class IsUnCompleteRegistration
 {
     /**
      * Handle an incoming request.
@@ -17,12 +17,11 @@ class IsCompleteRegistration
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->is_complete_registration == User::UNCOMPLETE_REGISTRATION){
+        if(Auth::user()->is_complete_registration == User::COMPLETE_REGISTRATION){
             return $next($request);
         }else{
-            if($request->route()->getName() == 'business-info.index'){
-                return redirect()->route('home');
-            }
+            return redirect()->route('business-info.index');
         }
+
     }
 }

@@ -53,7 +53,9 @@ class RegisterController extends Controller
             'package_subscription_name' => $package->name,
             'valid_until'               => Carbon::now()->addDays(14)->format('Y-m-d'),
             'is_subscribe'              => true,
-            'is_complete_registration'  => false
+            'is_complete_registration'  => false,
+            'created_by'                => 'RGOOW'.$num,
+            'updated_by'                => 'RGOOW'.$num,
         ]);
 
         $user = User::create($request->all());

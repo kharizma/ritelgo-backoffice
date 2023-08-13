@@ -49,7 +49,7 @@ Route::middleware(['auth','is.complete'])->prefix('business-info')->as('business
     Route::put('/edit', [BusinessInfoController::class,'update'])->name('update');
 });
 
-Route::middleware(['auth','is.complete'])->group(function () {
+Route::middleware(['auth','is.uncomplete'])->group(function () {
     Route::get('/home', HomeController::class)->name('home');
 
     Route::prefix('settings')->as('settings.')->group(function () {
