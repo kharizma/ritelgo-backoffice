@@ -27,7 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public const UNSUBSCRIBE_EMAIL  = false;
 
     public const COMPLETE_REGISTRATION  = true;
-    public const UNCOMPLETE_REGISTRATION  = true;
+    public const UNCOMPLETE_REGISTRATION  = false;
 
     public const STATUSES = [
         self::ROLE_MANAGER,
