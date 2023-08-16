@@ -44,8 +44,8 @@ Route::prefix('helper')->as('helper.')->group(function() {
     Route::get('/zip-code/{village_id?}',[HelperController::class,'getZipCode'])->name('zip_code');
 });
 
-Route::middleware(['auth','is.complete'])->prefix('business-info')->as('business-info.')->group(function () {
-    Route::get('/', [BusinessInfoController::class,'index'])->name('index');
+Route::middleware(['auth'])->prefix('business-info')->as('business-info.')->group(function () {
+    Route::get('/', [BusinessInfoController::class,'index'])->name('index')->middleware('is.complete');
     Route::post('/', [BusinessInfoController::class,'store'])->name('store');
     Route::put('/edit', [BusinessInfoController::class,'update'])->name('update');
 });

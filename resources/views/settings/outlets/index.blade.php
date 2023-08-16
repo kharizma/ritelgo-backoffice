@@ -72,7 +72,7 @@
         </div>
     </section>
 
-    <!-- Crate Modal -->
+    <!-- Create Modal -->
     <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -180,7 +180,7 @@
                             <div class="select-style-1">
                                 <label>Provinsi</label>
                                 <div class="select-position">
-                                    <select name="province_id" id="province_id">
+                                    <select name="province_id" id="edit_province_id">
                                         <option value="">Silahkan Pilih</option>
                                         @foreach ($provinces as $province)
                                             <option value="{{ $province->id }}">{{ $province->name }}</option>
@@ -193,10 +193,9 @@
                             <div class="select-style-1">
                                 <label>Kabupaten / Kota</label>
                                 <div class="select-position">
-                                    <select name="regency_id" id="regency_id">
+                                    <select name="regency_id" id="edit_regency_id">
                                         <option value="">Silahkan Pilih</option>
                                     </select>
-                                    <div id="processing-regency" style="font-style: italic; font-size: 12px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -204,10 +203,9 @@
                             <div class="select-style-1">
                                 <label>Kecamatan</label>
                                 <div class="select-position">
-                                    <select name="district_id" id="district_id">
+                                    <select name="district_id" id="edit_district_id">
                                         <option value="">Silahkan Pilih</option>
                                     </select>
-                                    <div id="processing-district" style="font-style: italic; font-size: 12px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -215,17 +213,16 @@
                             <div class="select-style-1">
                                 <label>Kelurahan</label>
                                 <div class="select-position">
-                                    <select name="village_id" id="village_id">
+                                    <select name="village_id" id="edit_village_id">
                                         <option value="">Silahkan Pilih</option>
                                     </select>
-                                    <div id="processing-village" style="font-style: italic; font-size: 12px;"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xxl-4">
                             <div class="input-style-1">
                                 <label>Kode Pos</label>
-                                <input type="text" name="zip_code" id="zip_code"/>
+                                <input type="text" name="zip_code" id="edit_zip_code"/>
                             </div>
                         </div>
                     </div>
@@ -252,11 +249,11 @@
 
             $('#editName').val(src.data('name'));
             $('#editAddress').val(src.data('address'));
-            $('#province_id').val(src.data('province_id'));
-            if (bsn_province_id != '') await getRegency(bsn_province_id,bsn_regency_id, true);
-            if (bsn_regency_id != '') await getDistrict(bsn_regency_id,bsn_district_id, true);
-            if (bsn_district_id != '') await getVillage(bsn_district_id,bsn_village_id, true);
-            $('#zip_code').val(src.data('zip_code'));
+            $('#edit_province_id').val(src.data('province_id'));
+            if (bsn_province_id != '') await getEditRegency(bsn_province_id,bsn_regency_id, true);
+            if (bsn_regency_id != '') await getEditDistrict(bsn_regency_id,bsn_district_id, true);
+            if (bsn_district_id != '') await getEditVillage(bsn_district_id,bsn_village_id, true);
+            $('#edit_zip_code').val(src.data('zip_code'));
 
             var url = "{{ route('settings.outlets.update',["outlet" => ":outlet"]) }}";
             url = url.replace(':outlet', src.data('id'));
@@ -350,6 +347,88 @@
             });
         }
 
+        async function getEditRegency(province_id, regency_id, isSet = false) {
+            await $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ route('helper.regencies') }}" + '/' + province_id,
+                beforeSend: function() {
+                    $('#processing-regency').html('Processing...');
+                },
+                success: function(data) {
+                    $('#edit_regency_id').empty();
+                    $("#edit_regency_id").append('<option value="">Silahkan Pilih</option>');
+                    $('#edit_district_id').empty();
+                    $("#edit_district_id").append('<option value="">Silahkan Pilih</option>');
+                    $('#edit_village_id').empty();
+                    $("#edit_village_id").append('<option value="">Silahkan Pilih</option>');
+                    $.each(data, function(key, value) {
+                        $("#edit_regency_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    })
+                    $('#edit_regency_id').val(isSet ? regency_id : '');
+                },
+                complete: function() {
+                    $('#processing-regency').html('');
+                },
+                error: function() {
+                    $('#processing-regency').html('');
+                }
+            });
+        }
+
+        async function getEditDistrict(regency_id, district_id, isSet) {
+            await $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ route('helper.districts') }}" + '/' + regency_id,
+                beforeSend: function() {
+                    $('#processing-district').html('Processing...');
+                },
+                success: function(data) {
+                    $('#edit_district_id').empty();
+                    $("#edit_district_id").append('<option value="">Silahkan Pilih</option>');
+                    $('#edit_village_id').empty();
+                    $("#edit_village_id").append('<option value="">Silahkan Pilih</option>');
+                    $.each(data, function(key, value) {
+                        $("#edit_district_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    })
+                    $('#edit_district_id').val(isSet ? district_id : '');
+                },
+                complete: function() {
+                    $('#processing-district').html('');
+                },
+                error: function() {
+                    $('#processing-district').html('');
+                }
+            });
+        }
+
+        async function getEditVillage(district_id, village_id, isSet) {
+            await $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ route('helper.villages') }}" + '/' + district_id,
+                beforeSend: function() {
+                    $('#processing-village').html('Processing...');
+                },
+                success: function(data) {
+                    $('#edit_village_id').empty();
+                    $("#edit_village_id").append('<option value="">Silahkan Pilih</option>');
+                    $.each(data, function(key, value) {
+                        $("#edit_village_id").append('<option value="' + value.id + '">' + value.name +'</option>');
+                    });
+                    $('#edit_village_id').val(isSet ? village_id : '');
+
+                },
+                complete: function() {
+                    $('#processing-village').html('');
+                },
+                error: function() {
+                    $('#processing-village').html('');
+                }
+            });
+        }
+
         $("#province_id").change(async function() {
             await getRegency($('#province_id').val());
         });
@@ -369,6 +448,29 @@
                 url: "{{ route('helper.zip_code') }}" + '/' + $("#village_id").val(),
                 success: function(data) {
                     $('#zip_code').val(data.zip_code);
+                }
+            });
+        });
+
+        $("#edit_province_id").change(async function() {
+            await getEditRegency($('#edit_province_id').val());
+        });
+
+        $("#edit_regency_id").change(async function() {
+            await getEditDistrict($('#edit_regency_id').val());
+        });
+
+        $("#edit_district_id").change(async function() {
+            await getEditVillage($('#edit_district_id').val());
+        });
+
+        $("#edit_village_id").change(function() {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ route('helper.zip_code') }}" + '/' + $("#edit_village_id").val(),
+                success: function(data) {
+                    $('#edit_zip_code').val(data.zip_code);
                 }
             });
         });
