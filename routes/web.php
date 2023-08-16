@@ -9,6 +9,7 @@ use App\Http\Controllers\BusinessInfoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\BillingController;
+use App\Http\Controllers\Settings\OutletController;
 use App\Http\Controllers\HelperController;
 
 /*
@@ -60,6 +61,11 @@ Route::middleware(['auth','is.uncomplete'])->group(function () {
         });
         Route::prefix('billing')->as('billing.')->group(function () {
             Route::get('/', [BillingController::class,'index'])->name('index');
+        });
+        Route::prefix('outlets')->as('outlets.')->group(function () {
+            Route::get('/', [OutletController::class,'index'])->name('index');
+            Route::post('/', [OutletController::class,'store'])->name('store');
+            Route::put('/{outlet}', [OutletController::class,'update'])->name('update');
         });
     });
 });

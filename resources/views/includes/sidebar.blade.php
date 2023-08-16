@@ -37,7 +37,8 @@
                   class="{{ in_array(\Request::route()->getName(),
                     array(
                         'settings.accounts.index',
-                        'settings.billing.index'
+                        'settings.billing.index',
+                        'settings.outlets.index'
                     )) ? '' : 'collapsed' }} nav-link"
                   data-bs-toggle="collapse"
                   data-bs-target="#ddmenu_2"
@@ -45,7 +46,8 @@
                   aria-expanded="{{ in_array(\Request::route()->getName(),
                     array(
                         'settings.accounts.index',
-                        'settings.billing.index'
+                        'settings.billing.index',
+                        'settings.outlets.index'
                     )) ? 'true' : 'false' }}"
                   aria-label="Toggle navigation"
                 >
@@ -66,7 +68,8 @@
                 <ul id="ddmenu_2" class="collapse dropdown-nav {{ in_array(\Request::route()->getName(),
                     array(
                         'settings.accounts.index',
-                        'settings.billing.index'
+                        'settings.billing.index',
+                        'settings.outlets.index'
                     )) ? 'show' : '' }}">
                     <li>
                         <a href="{{ route('settings.accounts.index') }}" class="nav-link {{ in_array(\Request::route()->getName(),
@@ -77,7 +80,8 @@
                             array('settings.billing.index')) ? 'text-ritelgo-primary' : '' }}"> Billing </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link"> Outlet </a>
+                        <a href="{{ route('settings.outlets.index') }}" class="nav-link {{ in_array(\Request::route()->getName(),
+                            array('settings.outlets.index')) ? 'text-ritelgo-primary' : '' }}"> Outlet </a>
                     </li>
                 </ul>
             </li>

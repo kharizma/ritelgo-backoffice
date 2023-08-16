@@ -276,14 +276,14 @@
         });
 
         $("#village_id").change(function() {
-                $.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: "{{ route('helper.zip_code') }}" + '/' + $("#village_id").val(),
-                    success: function(data) {
-                        $('#zip_code').val(data.zip_code);
-                    }
-                });
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ route('helper.zip_code') }}" + '/' + $("#village_id").val(),
+                success: function(data) {
+                    $('#zip_code').val(data.zip_code);
+                }
             });
+        });
     </script>
 @endpush
