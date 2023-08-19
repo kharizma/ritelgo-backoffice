@@ -19,6 +19,11 @@ class LoginController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         if (Auth::attempt($request->validated(),$request->get('remember'))) {
+            if(Auth::user()->email_verified_at == NULL){
+                Auth::logout();
+                return redirect()->route('login');
+            }
+
             $request->session()->regenerate();
  
             return redirect()->intended('/home');
