@@ -11,6 +11,7 @@ use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\BillingController;
 use App\Http\Controllers\Settings\OutletController;
 use App\Http\Controllers\HelperController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,8 @@ Route::middleware(['auth'])->prefix('business-info')->as('business-info.')->grou
 Route::middleware(['auth','is.uncomplete'])->group(function () {
     Route::get('/home', HomeController::class)->name('home');
 
+    Route::get('/invoice/{invoice}', InvoiceController::class)->name('invoice');
+
     Route::prefix('settings')->as('settings.')->group(function () {
         Route::prefix('accounts')->as('accounts.')->group(function () {
             Route::get('/', [AccountController::class,'index'])->name('index');
@@ -61,6 +64,10 @@ Route::middleware(['auth','is.uncomplete'])->group(function () {
         });
         Route::prefix('billing')->as('billing.')->group(function () {
             Route::get('/', [BillingController::class,'index'])->name('index');
+            Route::get('/upgrade-package', [BillingController::class,'upgrade'])->name('upgrade');
+            Route::post('/upgrade-package', [BillingController::class,'store'])->name('store');
+            Route::get('/checkout/{invoice}', [BillingController::class,'checkout'])->name('checkout');
+            Route::post('/payment', [BillingController::class,'payment'])->name('payment');
         });
         Route::prefix('outlets')->as('outlets.')->group(function () {
             Route::get('/', [OutletController::class,'index'])->name('index');
